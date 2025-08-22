@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-8px);
+  }
+  40%,
+  80% {
+    transform: translateX(8px);
+  }
+}
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+@keyframes reverseClockReveal {
+  0% {
+    clip-path: circle(0% at 100% 50%);
+    opacity: 0;
+  }
+  100% {
+    clip-path: circle(150% at 100% 50%);
+    opacity: 1;
+  }
+}
+
+.reverse-clock {
+  animation: reverseClockReveal 0.5s ease-out forwards;
+}
+.loader {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #3b82f6; /* blue */
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
