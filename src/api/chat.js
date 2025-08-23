@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-// Axios instance for chat API
+// Base axios instance for conversations
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL + '/api/chat',
+  baseURL: import.meta.env.VITE_API_URL + '/api/conversations',
 });
 
 // Automatically attach token if exists
@@ -12,17 +12,27 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Conversations
-export const createConversation = (otherUserId) =>
-  api.post('/conversations', { otherUserId });
+// -------------------- Conversations --------------------
 
-export const listConversations = () => api.get('/conversations');
+// Initialize or get conversation with another user
+export const createConversation = (receiverId) =>
+  api.post('/init', { receiverId });
 
-// Messages
+// List all conversations of the logged-in user
+export const listConversations = () => api.get('/');
+
+// -------------------- Messages --------------------
+
+// Get messages of a conversation with optional limit/skip
 export const listMessages = (conversationId, opts = {}) =>
-  api.get(`/conversations/${conversationId}/messages`, { params: opts });
+  api.get(`/${conversationId}/messages`, { params: opts });
 
-export const sendMessage = (payload) => api.post('/messages', payload);
+// -------------------- Messages via REST (if supported) --------------------
 
+// Send a message in a conversation
+export const sendMessage = (conversationId, body) =>
+  api.post(`/${conversationId}/messages`, { body });
+
+// Mark a message as read (if backend route exists)
 export const markRead = (messageId) =>
   api.patch(`/messages/${messageId}/read`, {});

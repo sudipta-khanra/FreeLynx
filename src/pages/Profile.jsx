@@ -64,7 +64,8 @@ export default function ProfilePage() {
 
       const token = localStorage.getItem("token");
 
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/users/avatar`, {
+const res = await fetch(`${import.meta.env.VITE_API_URL}/users/avatar`, {
+
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
@@ -88,7 +89,8 @@ export default function ProfilePage() {
     try {
       if (!user?.token) throw new Error("No token found");
 
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/profile`, {
+const res2 = await fetch(`${import.meta.env.VITE_API_URL}/auth/profile`, {
+
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

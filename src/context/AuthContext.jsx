@@ -1,6 +1,7 @@
 // AuthContext.jsx
-
 import { createContext, useContext, useState, useEffect } from "react";
+
+const API_URL = import.meta.env.VITE_API_URL; // ✅ Add API URL
 
 // Create AuthContext
 export const AuthContext = createContext();
@@ -11,9 +12,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
+    if (storedUser) setUser(JSON.parse(storedUser));
     setLoading(false);
   }, []);
 
@@ -33,7 +32,7 @@ export const AuthProvider = ({ children }) => {
     try {
       if (!user?.token) throw new Error("No token found");
 
-     fetch(`${API_URL}/users/delete`, {
+      const res = await fetch(`${API_URL}/users/delete`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${user.token}` },
       });
@@ -45,6 +44,7 @@ export const AuthProvider = ({ children }) => {
 
       logout();
     } catch (error) {
+      console.error("Delete account error:", error);
       throw error;
     }
   };
@@ -56,13 +56,13 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("user", JSON.stringify(updatedUser));
   };
 
-  if (loading) return null; // Prevent children from rendering until user is restored
+  if (loading) return null; // Prevent children rendering until user is restored
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        setUser, // 👈 expose setUser so ProfilePage can use it
+        setUser,
         login,
         logout,
         updateProfilePicture,
