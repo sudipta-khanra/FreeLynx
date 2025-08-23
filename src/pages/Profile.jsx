@@ -1,9 +1,8 @@
-//profile.jsx
-
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "../context/ToastContext";
+
 export default function ProfilePage() {
   const {
     user,
@@ -23,6 +22,7 @@ export default function ProfilePage() {
   const [editing, setEditing] = useState(false);
   const navigate = useNavigate();
   const toast = useToast();
+
   useEffect(() => {
     if (user) {
       setBio(user.bio || "");
@@ -31,7 +31,7 @@ export default function ProfilePage() {
       setPortfolio(user.portfolio?.join(", ") || "");
     }
   }, [user]);
-  console.log(user);
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -41,6 +41,7 @@ export default function ProfilePage() {
       toast.error(err.message);
     }
   };
+
   const handleDelete = async () => {
     setShowConfirmModal(false);
     try {
@@ -51,6 +52,7 @@ export default function ProfilePage() {
       toast.error(err.message);
     }
   };
+
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -62,15 +64,15 @@ export default function ProfilePage() {
 
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:5000/api/users/avatar", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/users/avatar`, {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}` }, // no Content-Type
+        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
 
       const data = await res.json();
       if (res.ok) {
-        updateProfilePicture(data.avatar); // data.avatar should be Cloudinary URL
+        updateProfilePicture(data.avatar);
         toast.success("Profile picture updated!");
       } else {
         toast.error(data.message);
@@ -82,42 +84,11 @@ export default function ProfilePage() {
     }
   };
 
-  // const handleSaveProfile = async () => {
-  //   try {
-  //     if (!user?.token) throw new Error("No token found");
-  //     const res = await fetch("http://localhost:5000/api/auth/profile", {
-  //       method: "PUT",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${user.token}`,
-  //       },
-  //       body: JSON.stringify({
-  //         bio,
-  //         skills: skills.split(",").map((s) => s.trim()),
-  //         experience,
-  //         portfolio: portfolio.split(",").map((p) => p.trim()),
-  //       }),
-  //     });
-  //     if (!res.ok) {
-  //       const data = await res.json();
-  //       throw new Error(data.message || "Failed to update profile");
-  //     }
-  //     const updatedUser = await res.json();
-  //     setUser(updatedUser);
-  //     localStorage.setItem("user", JSON.stringify(updatedUser));
-  //     toast.success("Profile updated!");
-  //     navigate("/dashboard");
-  //     setEditing(false);
-  //   } catch (err) {
-  //     toast.error(err.message);
-  //   }
-  // };
-
   const handleSaveProfile = async () => {
     try {
       if (!user?.token) throw new Error("No token found");
 
-      const res = await fetch("http://localhost:5000/api/auth/profile", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -137,7 +108,6 @@ export default function ProfilePage() {
         throw new Error(data.message || "Failed to update profile");
       }
 
-      // ✅ merge old user with new profile fields
       const updatedUser = { ...user, ...data.user };
       setUser(updatedUser);
       localStorage.setItem("user", JSON.stringify(updatedUser));

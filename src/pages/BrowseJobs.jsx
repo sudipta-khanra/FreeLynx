@@ -138,19 +138,24 @@ export default function BrowseJobs() {
     }
   }, [user, navigate]);
 
-  const fetchJobs = async () => {
-    try {
-      const response = await fetch("/api/jobs"); // Replace with your actual API URL
-      if (!response.ok) {
-        throw new Error("Failed to fetch jobs");
-      }
-      const data = await response.json();
-      setJobs(data.jobs || []); // Adjust according to your API response structure
-    } catch (error) {
-      console.error("Error fetching jobs:", error);
-      setJobs([]); // Optionally clear jobs or set an error state
+ const fetchJobs = async () => {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/jobs`, {
+      headers: {
+        Authorization: `Bearer ${user.token}`, // if jobs API needs auth
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Failed to fetch jobs");
     }
-  };
+    const data = await response.json();
+    setJobs(data.jobs || []);
+  } catch (error) {
+    console.error("Error fetching jobs:", error);
+    setJobs([]);
+  }
+};
+
 
   const totalPages = Math.ceil(jobs.length / JOBS_PER_PAGE);
   const startIndex = (currentPage - 1) * JOBS_PER_PAGE;
