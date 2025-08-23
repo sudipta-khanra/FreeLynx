@@ -5,6 +5,8 @@ import { createContext, useContext, useState, useEffect } from "react";
 // Create AuthContext
 export const AuthContext = createContext();
 
+const API_URL = import.meta.env.VITE_API_URL; // ✅ Use environment variable
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -33,7 +35,7 @@ export const AuthProvider = ({ children }) => {
     try {
       if (!user?.token) throw new Error("No token found");
 
-      const res = await fetch("http://localhost:5000/api/users/delete", {
+      const res = await fetch(`${API_URL}/api/users/delete`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${user.token}` },
       });
