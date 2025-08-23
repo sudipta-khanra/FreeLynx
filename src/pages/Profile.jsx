@@ -23,7 +23,7 @@ export default function ProfilePage() {
   const navigate = useNavigate();
   const toast = useToast();
 
-  // Initialize form fields with user data
+  // ------------------ Initialize form fields ------------------
   useEffect(() => {
     if (user) {
       setBio(user.bio || "");
