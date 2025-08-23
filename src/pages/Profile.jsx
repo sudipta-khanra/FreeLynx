@@ -64,8 +64,7 @@ export default function ProfilePage() {
 
       const token = localStorage.getItem("token");
 
-const res = await fetch(`${import.meta.env.VITE_API_URL}/users/avatar`, {
-
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/users/avatar`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
@@ -86,40 +85,40 @@ const res = await fetch(`${import.meta.env.VITE_API_URL}/users/avatar`, {
   };
 
   const handleSaveProfile = async () => {
-    try {
-      if (!user?.token) throw new Error("No token found");
+  try {
+    if (!user?.token) throw new Error("No token found");
 
-const res2 = await fetch(`${import.meta.env.VITE_API_URL}/auth/profile`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/profile`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+      body: JSON.stringify({
+        bio,
+        skills: skills.split(",").map((s) => s.trim()),
+        experience,
+        portfolio: portfolio.split(",").map((p) => p.trim()),
+      }),
+    });
 
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-        body: JSON.stringify({
-          bio,
-          skills: skills.split(",").map((s) => s.trim()),
-          experience,
-          portfolio: portfolio.split(",").map((p) => p.trim()),
-        }),
-      });
+    const data = await res.json(); // ✅ Use the same variable "res"
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Failed to update profile");
-      }
-
-      const updatedUser = { ...user, ...data.user };
-      setUser(updatedUser);
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-
-      toast.success("Profile updated!");
-      setEditing(false);
-    } catch (err) {
-      toast.error(err.message);
+    if (!res.ok) {
+      throw new Error(data.message || "Failed to update profile");
     }
-  };
+
+    const updatedUser = { ...user, ...data.user };
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+
+    toast.success("Profile updated!");
+    setEditing(false);
+  } catch (err) {
+    toast.error(err.message);
+  }
+};
+
 
   if (!user)
     return (
