@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
     try {
       if (!user?.token) throw new Error("No token found");
 
-      const res = await fetch("http://localhost:5000/api/users/delete", {
+     fetch(`${API_URL}/users/delete`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${user.token}` },
       });

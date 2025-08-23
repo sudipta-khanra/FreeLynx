@@ -46,7 +46,7 @@ const onSubmit = async (data) => {
     // Add postedBy field
     const payload = { ...data, postedBy: user._id };
 
-    const response = await fetch("http://localhost:5000/api/jobs", {
+    const response = await fetch(`${API_URL}/jobs`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
