@@ -95,7 +95,7 @@ export default function ProfilePage() {
     try {
       if (!user?.token) throw new Error("No token found");
 
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/profile`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
