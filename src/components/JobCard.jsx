@@ -47,7 +47,19 @@ export default function JobCard({ job }) {
               d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7a2 2 0 002 2z"
             />
           </svg>
-          <span>Deadline: {job.deadline}</span>
+          {/* <span>Deadline: {job.deadline}</span> */}
+          <span>
+  Deadline: {new Date(job.deadline).toLocaleString("en-IN", {
+    timeZone: "Asia/Kolkata",
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  })} IST
+</span>
+
         </span>
       </div>
       <Link
