@@ -124,7 +124,17 @@ export default function JobDetails() {
           <div className="bg-gradient-to-r from-yellow-50 to-white p-5 rounded-lg border hover:shadow-md transition-shadow">
             <p className="font-semibold text-gray-600">Submission Deadline</p>
             <p className="text-lg font-medium">
-              {new Date(job.deadline).toDateString()}
+              {/* {new Date(job.deadline).toDateString()} */}
+              {new Date(job.deadline).toLocaleString("en-IN", {
+  timeZone: "Asia/Kolkata",
+  day: "2-digit",
+  month: "short",
+  year: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: true,
+})} IST
+
             </p>
           </div>
           <div className="bg-gradient-to-r from-blue-50 to-white p-5 rounded-lg border hover:shadow-md transition-shadow">
