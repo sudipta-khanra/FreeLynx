@@ -173,11 +173,7 @@ return (
     <h1 className="text-4xl font-extrabold text-center text-indigo-700 mb-12 tracking-wide drop-shadow-md">
       Browse Jobs
     </h1>
-if (loading) {
-    <div className="flex justify-center items-center min-h-[70vh]">
-      <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-    </div>
-}
+
 
     {/* ✅ Spinner when loading */}
     {loading ? (
