@@ -9,7 +9,7 @@ export default function ProfilePage() {
     setUser,
     logout,
     updateProfilePicture,
-    updateProfile, // ✅ use this (matches AuthContext)
+    updateProfile,
     deleteAccount,
   } = useAuth();
 
@@ -20,6 +20,8 @@ export default function ProfilePage() {
   const [uploading, setUploading] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [editing, setEditing] = useState(false);
+  const [loading, setLoading] = useState(true); // ✅ Page-level loading
+
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -30,6 +32,7 @@ export default function ProfilePage() {
       setExperience(user.experience || "");
       setPortfolio(user.portfolio?.join(", ") || "");
     }
+    setTimeout(() => setLoading(false), 500); // Simulate loading delay
   }, [user]);
 
   const handleLogout = async () => {
@@ -118,12 +121,23 @@ export default function ProfilePage() {
       toast.error(err.message);
     }
   };
+
+  // ✅ Show loading spinner while page data is being prepared
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <div className="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   if (!user)
     return (
       <p className="text-center mt-10 text-gray-500">
         Please login to view profile.
       </p>
     );
+
   return (
     <div className="max-w-3xl mx-auto mt-12 p-6 bg-gray-50 rounded-2xl shadow-xl">
       {/* Avatar & Name */}
@@ -170,8 +184,10 @@ export default function ProfilePage() {
         <h2 className="mt-4 text-2xl font-bold text-gray-800">{user.name}</h2>
         <p className="text-gray-500">{user.email}</p>
       </div>
+
       {/* Editable Profile Info */}
       <div className="bg-white p-6 rounded-xl shadow-md space-y-4">
+        {/* Bio */}
         <div>
           <h3 className="font-semibold text-gray-700">Bio</h3>
           {editing ? (
@@ -184,6 +200,7 @@ export default function ProfilePage() {
             <p className="text-gray-600">{user.bio || "Not provided"}</p>
           )}
         </div>
+        {/* Skills */}
         <div>
           <h3 className="font-semibold text-gray-700">Skills</h3>
           {editing ? (
@@ -200,6 +217,7 @@ export default function ProfilePage() {
             </p>
           )}
         </div>
+        {/* Experience */}
         <div>
           <h3 className="font-semibold text-gray-700">Experience</h3>
           {editing ? (
@@ -215,6 +233,7 @@ export default function ProfilePage() {
             </p>
           )}
         </div>
+        {/* Portfolio */}
         <div>
           <h3 className="font-semibold text-gray-700">Portfolio</h3>
           {editing ? (
@@ -231,6 +250,7 @@ export default function ProfilePage() {
             </p>
           )}
         </div>
+
         {/* Buttons */}
         <div className="flex justify-center gap-4 mt-4 flex-wrap">
           {editing ? (
@@ -262,6 +282,7 @@ export default function ProfilePage() {
           </button>
         </div>
       </div>
+
       {/* Confirm Delete Modal */}
       {showConfirmModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
