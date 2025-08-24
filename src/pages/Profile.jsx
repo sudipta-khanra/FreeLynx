@@ -9,6 +9,7 @@ export default function ProfilePage() {
     setUser,
     logout,
     updateProfilePicture,
+    updateProfile, // ✅ use this (matches AuthContext)
     deleteAccount,
   } = useAuth();
 
@@ -19,11 +20,9 @@ export default function ProfilePage() {
   const [uploading, setUploading] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [editing, setEditing] = useState(false);
-
   const navigate = useNavigate();
   const toast = useToast();
 
-  // ------------------ Initialize form fields ------------------
   useEffect(() => {
     if (user) {
       setBio(user.bio || "");
@@ -33,7 +32,6 @@ export default function ProfilePage() {
     }
   }, [user]);
 
-  // ------------------ Logout ------------------
   const handleLogout = async () => {
     try {
       await logout();
@@ -44,7 +42,6 @@ export default function ProfilePage() {
     }
   };
 
-  // ------------------ Delete Account ------------------
   const handleDelete = async () => {
     setShowConfirmModal(false);
     try {
@@ -56,11 +53,9 @@ export default function ProfilePage() {
     }
   };
 
-  // ------------------ Upload Profile Picture ------------------
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
     setUploading(true);
 
     try {
@@ -76,12 +71,11 @@ export default function ProfilePage() {
       });
 
       const data = await res.json();
-
-      if (res.ok && data.avatar) {
+      if (res.ok) {
         updateProfilePicture(data.avatar);
         toast.success("Profile picture updated!");
       } else {
-        toast.error(data.message || "Failed to upload image");
+        toast.error(data.message);
       }
     } catch (err) {
       toast.error(err.message);
@@ -90,7 +84,6 @@ export default function ProfilePage() {
     }
   };
 
-  // ------------------ Save Profile ------------------
   const handleSaveProfile = async () => {
     try {
       if (!user?.token) throw new Error("No token found");
@@ -125,7 +118,6 @@ export default function ProfilePage() {
       toast.error(err.message);
     }
   };
-
   if (!user)
     return (
       <p className="text-center mt-10 text-gray-500">

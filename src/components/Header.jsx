@@ -4,30 +4,18 @@ import { useAuth } from "../context/AuthContext";
 import { FaSearch, FaBars, FaTimes } from "react-icons/fa";
 
 export default function Header() {
-  const { user, logout, updateProfilePicture } = useAuth();
+  const { user, logout } = useAuth();
   const [results, setResults] = useState([]);
   const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const menuRef = useRef(null);
-  const [isClosing, setIsClosing] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // ✅ Use env variable (set different URLs for local & production)
-  const API_URL = import.meta.env.VITE_API_URL;
+  const API_URL = import.meta.env.VITE_API_URL; // Already includes /api
 
-  const toggleSearch = () => {
-    if (searchOpen) {
-      setIsClosing(true);
-      setTimeout(() => {
-        setIsClosing(false);
-        setSearchOpen(false);
-      }, 500);
-    } else {
-      setSearchOpen(true);
-    }
-  };
+  const toggleSearch = () => setSearchOpen((prev) => !prev);
 
   const handleLogout = () => {
     logout();
@@ -41,7 +29,7 @@ export default function Header() {
 
     try {
       const res = await fetch(
-        `${API_URL}/api/jobs?search=${encodeURIComponent(searchTerm)}`
+        `${API_URL}/jobs?search=${encodeURIComponent(searchTerm)}`
       );
 
       if (!res.ok) {
@@ -92,15 +80,10 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const skipEffect = useRef(false);
+  const inputRef = useRef(null);
 
   // ------------------ Search as you type ------------------
   useEffect(() => {
-    if (skipEffect.current) {
-      skipEffect.current = false;
-      return;
-    }
-
     if (!searchTerm.trim()) {
       setResults([]);
       setShowDropdown(false);
@@ -110,7 +93,7 @@ export default function Header() {
     const fetchResults = async () => {
       try {
         const res = await fetch(
-          `${API_URL}/api/jobs?search=${encodeURIComponent(searchTerm)}`
+          `${API_URL}/jobs?search=${encodeURIComponent(searchTerm)}`
         );
 
         if (!res.ok) {
@@ -135,18 +118,15 @@ export default function Header() {
     return () => clearTimeout(debounce);
   }, [searchTerm, API_URL]);
 
-  const inputRef = useRef(null);
-
   // ------------------ Select job from dropdown ------------------
   const handleSelect = (jobId) => {
-    if (inputRef.current) {
-      inputRef.current.value = "";
-    }
+    if (inputRef.current) inputRef.current.value = "";
     setResults([]);
     setShowDropdown(false);
     navigate(`/jobs/${jobId}`);
     setSearchTerm("");
   };
+
   return (
     <header className="bg-white shadow-md px-4 md:px-6 py-4 sticky top-0 z-50 flex items-center justify-between">
       {/* Logo */}
