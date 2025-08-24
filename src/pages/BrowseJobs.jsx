@@ -174,7 +174,6 @@ return (
       Browse Jobs
     </h1>
 
-
     {/* ✅ Spinner when loading */}
     {loading ? (
       <div className="flex justify-center items-center h-64">
