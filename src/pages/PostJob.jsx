@@ -61,7 +61,6 @@ const onSubmit = async (data) => {
     }
 
     const result = await response.json();
-    console.log("✅ Job posted:", result);
     alert("Job posted successfully!");
     navigate("/dashboard");
   } catch (error) {
