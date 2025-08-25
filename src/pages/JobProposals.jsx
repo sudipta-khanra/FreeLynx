@@ -36,7 +36,7 @@ export default function JobProposals() {
         typeof jobId === "object" && jobId !== null
           ? jobId._id || jobId.id
           : jobId;
-      // console.log("Using jobId:", actualJobId, typeof actualJobId);
+      console.log("Using jobId:", actualJobId, typeof actualJobId);
 
       // Fetch proposals
       const res = await axios.get(
@@ -48,6 +48,7 @@ export default function JobProposals() {
           },
         }
       );
+      console.log("Proposals API response:", res.data);
 
       setProposals(res.data);
 

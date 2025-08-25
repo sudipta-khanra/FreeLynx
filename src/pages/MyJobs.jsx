@@ -10,6 +10,7 @@ export default function MyJobs() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  console.log("🧪 useAuth user:", user);
 
   // Redirect if not logged in or not a client
   useEffect(() => {
@@ -25,6 +26,7 @@ export default function MyJobs() {
   // Load jobs when token is available
   useEffect(() => {
     if (user?.token) {
+      console.log("✅ Token available:", user.token);
       loadJobs();
     } else {
       console.warn("🚫 No token, skipping loadJobs()");
@@ -38,6 +40,7 @@ export default function MyJobs() {
       setError("");
 
       const data = await getMyJobs(user.token);
+      console.log("📦 Raw API response:", data);
 
       if (Array.isArray(data)) {
         setJobs(data);

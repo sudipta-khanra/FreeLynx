@@ -114,6 +114,7 @@ export default function RegisterForm() {
 
     try {
       const res = await registerUser(dataToSend);
+      console.log("Registered:", res);
       alert("Registration successful ✅");
       navigate("/login");
     } catch (error) {
