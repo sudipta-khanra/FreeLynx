@@ -6,7 +6,7 @@ export default function Home() {
   return (
 <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100 p-4 sm:p-8">
   <div className="bg-white shadow-lg rounded-2xl p-6 sm:p-10 max-w-full sm:max-w-xl w-full text-center border border-gray-200">
-    <h1 className="text-2xl sm:text-2xl md:text-5xl font-extrabold text-blue-700 mb-3 sm:mb-5 drop-shadow-sm">
+    <h1 className="text-lg sm:text-3xl md:text-5xl font-extrabold text-blue-700 mb-3 sm:mb-5 drop-shadow-sm">
       Welcome to <span className="text-blue-900">FreeLynx</span>
     </h1>
 
