@@ -1,11 +1,7 @@
-import React from 'react';
-import AppRoutes from './routes/AppRoutes';
-import { ToastProvider } from './context/ToastContext';
+import './App.css';
 
-export default function App() {
-  return (
-    <ToastProvider>
-      <AppRoutes />
-    </ToastProvider>
-  );
+function App() {
+  return <div>The page is under construction</div>;
 }
+
+export default App;
