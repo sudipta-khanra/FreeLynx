@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Plus } from 'lucide-react';
-// ✅ বদলে এই সঠিক লাইনটি লিখে দাও:
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 import { registerUser } from '../services/authService'; // adjust path
 import { useNavigate } from 'react-router-dom';
 
